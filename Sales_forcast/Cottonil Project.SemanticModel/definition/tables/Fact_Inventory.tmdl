@@ -1,0 +1,96 @@
+table Fact_Inventory
+	lineageTag: 917f3813-e7d1-419f-b334-b8f2ff03fa8d
+
+	column Inventory_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 00a47745-1e93-4fde-9890-aba52324c0ee
+		summarizeBy: none
+		sourceColumn: Inventory_Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Store
+		dataType: string
+		lineageTag: fdb864b0-1d10-4886-8217-383638d957bb
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Department
+		dataType: string
+		lineageTag: f68853f3-fb83-4dfa-8f47-dccbd8839bca
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 87062696-e40a-4aee-9179-5a7408ca81eb
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: c85698c9-514c-4450-a465-cdd720503248
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Color
+		dataType: string
+		lineageTag: 7796f8f3-4782-4ca6-a481-377c58d5e5ec
+		summarizeBy: none
+		sourceColumn: Color
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Group
+		dataType: string
+		lineageTag: 07c04cc3-7861-449f-875d-8869eb21e2ad
+		summarizeBy: none
+		sourceColumn: Product_Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Code
+		dataType: int64
+		formatString: 0
+		lineageTag: 91331895-25dc-47b2-8770-2b456cc7bafe
+		summarizeBy: none
+		sourceColumn: Product_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Stock_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: f1d6ea8f-2ac6-43da-9b60-dcac3d386ffd
+		summarizeBy: sum
+		sourceColumn: Stock_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Inventory = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ahmed\OneDrive\Documents\my-data-analysis-project\cottonil_Inventory of goods_cleaning\Cottonil_Inventory_PowerBI_Ready.xlsx"), null, true),
+				    Inventory_Sheet = Source{[Item="Inventory",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Inventory_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Inventory_Date", type date}, {"Store", type text}, {"Department", type text}, {"Product_Name", type text}, {"Size", type text}, {"Color", type text}, {"Product_Group", type text}, {"Product_Code", Int64.Type}, {"Stock_Quantity", Int64.Type}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "98358377dea270685049",
+  "displayName": "Sales Performance Analysis",
+  "displayOption": "ActualSize",
+  "height": 3000,
+  "width": 3000
+}

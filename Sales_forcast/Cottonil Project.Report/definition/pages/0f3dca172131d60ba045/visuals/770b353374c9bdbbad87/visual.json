@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "770b353374c9bdbbad87",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 1000,
+    "height": 252,
+    "width": 298,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Cottonil_Actual_vs_Forecast"
+                    }
+                  },
+                  "Property": "Average Actual Monthly Sales"
+                }
+              },
+              "queryRef": "Cottonil_Actual_vs_Forecast.Average Actual Monthly Sales",
+              "nativeQueryRef": "Average Actual Monthly Sales"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Cottonil_Actual_vs_Forecast"
+                  }
+                },
+                "Property": "Average Actual Monthly Sales"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

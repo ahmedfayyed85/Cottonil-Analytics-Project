@@ -1,0 +1,142 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "Fluent2-CY26SU10",
+      "reportVersionAtImport": {
+        "visual": "2.14.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "SharedResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "htmlContent443BE3AD55E043BF878BED274D3A6855"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "Fluent2-CY26SU10",
+          "path": "BaseThemes/Fluent2-CY26SU10.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Avatar_Small5735493763560987.png",
+          "path": "Avatar_Small5735493763560987.png",
+          "type": "Image"
+        },
+        {
+          "name": "Cart42408353152396316.png",
+          "path": "Cart42408353152396316.png",
+          "type": "Image"
+        },
+        {
+          "name": "Dollar29374594910505725.png",
+          "path": "Dollar29374594910505725.png",
+          "type": "Image"
+        },
+        {
+          "name": "File_Document9068394668984143.png",
+          "path": "File_Document9068394668984143.png",
+          "type": "Image"
+        },
+        {
+          "name": "home7267444536304246.png",
+          "path": "home7267444536304246.png",
+          "type": "Image"
+        },
+        {
+          "name": "home8338471041388775.png",
+          "path": "home8338471041388775.png",
+          "type": "Image"
+        },
+        {
+          "name": "Icon_Menu29900902277239887.png",
+          "path": "Icon_Menu29900902277239887.png",
+          "type": "Image"
+        },
+        {
+          "name": "Icon_Menu309118210775775437.png",
+          "path": "Icon_Menu309118210775775437.png",
+          "type": "Image"
+        },
+        {
+          "name": "Line_Chart_Up8807262102876652.png",
+          "path": "Line_Chart_Up8807262102876652.png",
+          "type": "Image"
+        },
+        {
+          "name": "Menu31890356219759985.png",
+          "path": "Menu31890356219759985.png",
+          "type": "Image"
+        },
+        {
+          "name": "Search42442930074011087.png",
+          "path": "Search42442930074011087.png",
+          "type": "Image"
+        },
+        {
+          "name": "Tag7423272059088102.png",
+          "path": "Tag7423272059088102.png",
+          "type": "Image"
+        },
+        {
+          "name": "Typing_Area5619592439084078.png",
+          "path": "Typing_Area5619592439084078.png",
+          "type": "Image"
+        },
+        {
+          "name": "Users29156445822375654.png",
+          "path": "Users29156445822375654.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

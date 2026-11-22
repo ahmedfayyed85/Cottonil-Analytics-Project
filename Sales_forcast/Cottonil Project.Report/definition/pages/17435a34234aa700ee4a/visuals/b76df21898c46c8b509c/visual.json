@@ -1,0 +1,90 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "b76df21898c46c8b509c",
+  "position": {
+    "x": 1026.6666666666667,
+    "y": 293.33333333333337,
+    "z": 8000,
+    "height": 492.85714285714289,
+    "width": 400,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_SupplierProducts"
+                    }
+                  },
+                  "Property": "Supplier"
+                }
+              },
+              "queryRef": "Fact_SupplierProducts.Supplier",
+              "nativeQueryRef": "Supplier",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_SupplierProducts"
+                    }
+                  },
+                  "Property": "Purchase Return Rate2"
+                }
+              },
+              "queryRef": "Fact_SupplierProducts.Purchase Return Rate2",
+              "nativeQueryRef": "Purchase Return Rate2"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Fact_SupplierProducts"
+                  }
+                },
+                "Property": "Purchase Return Rate2"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

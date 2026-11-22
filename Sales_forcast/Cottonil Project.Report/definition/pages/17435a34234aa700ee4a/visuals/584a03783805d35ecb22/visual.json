@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "584a03783805d35ecb22",
+  "position": {
+    "x": 33.714285714285722,
+    "y": 22.571428571428577,
+    "z": 0,
+    "height": 250.00000000000003,
+    "width": 332.85714285714289,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_SupplierProducts"
+                    }
+                  },
+                  "Property": "Total Purchase Returns"
+                }
+              },
+              "queryRef": "Fact_SupplierProducts.Total Purchase Returns",
+              "nativeQueryRef": "Total Purchase Returns"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Fact_SupplierProducts"
+                  }
+                },
+                "Property": "Total Purchase Returns"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

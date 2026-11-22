@@ -1,0 +1,211 @@
+table Fact_SupplierProducts
+	lineageTag: 030c31fa-d6ac-4375-8b86-9f346ff455c5
+
+	measure 'Total Purchase Returns' =
+			
+			SUM(Fact_SupplierProducts[Purchase_Return_Quantity])
+		formatString: 0
+		lineageTag: 59e75ae7-36a0-4fff-b7b1-322f7009c1cc
+
+	measure 'Purchase Return Rate' =
+			
+			DIVIDE(
+			    [Total Purchase Returns],
+			    SUM(Fact_SupplierProducts[Purchase_Quantity]),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 0a62ceec-02cc-42a4-8245-f45c294d5439
+
+	measure 'Returned Products' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(Fact_SupplierProducts[Product_Code]),
+			    Fact_SupplierProducts[Purchase_Return_Quantity] > 0
+			)
+		formatString: 0
+		lineageTag: 50d5996b-79df-4220-bb67-4c517ca44318
+
+	measure 'Total Sales Returns' =
+			
+			SUM(Fact_SupplierProducts[Sales_Return_Quantity])
+		formatString: 0
+		lineageTag: 6634dca9-1873-455a-aff1-6404f8efde23
+
+	measure 'Sales Return Rate' =
+			
+			DIVIDE(
+			    [Total Sales Returns],
+			    SUM(Fact_SupplierProducts[Sales_Quantity]),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 9b6d3b26-f1ef-45ce-a762-0eb71c9237b4
+
+	measure 'Products with Sales Returns' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(Fact_SupplierProducts[Product_Code]),
+			    Fact_SupplierProducts[Sales_Return_Quantity] > 0
+			)
+		formatString: 0
+		lineageTag: 10298a89-aac5-4f16-9cbd-42ce39ae98f8
+
+	measure 'Purchase Return Rate2' =
+			
+			DIVIDE(
+			    SUM(Fact_SupplierProducts[Purchase_Return_Quantity]),
+			    SUM(Fact_SupplierProducts[Purchase_Quantity]),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 638817cd-3319-4b0e-84fe-2ba57def4359
+
+	measure 'Sales Return Rate2' =
+			
+			DIVIDE(
+			    SUM(Fact_SupplierProducts[Sales_Return_Quantity]),
+			    SUM(Fact_SupplierProducts[Sales_Quantity]),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f5096426-9321-4980-a110-c9300c314c70
+
+	measure 'Purchase Return Rate (100+ Units)' =
+			
+			IF(
+			    SUM(Fact_SupplierProducts[Purchase_Quantity]) >= 100,
+			    [Purchase Return Rate],
+			    BLANK()
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 59c78da7-d9c5-4a3f-8c35-da2d47632cd3
+
+	column Store
+		dataType: string
+		lineageTag: 37aab5bc-f451-4d87-a287-d4e94fff0abc
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Supplier
+		dataType: string
+		lineageTag: d65d6949-3765-4cb6-8814-dae707026a51
+		summarizeBy: none
+		sourceColumn: Supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 6f978b44-61ba-48c3-a696-460ef319101a
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Code
+		dataType: string
+		lineageTag: a3e147aa-a86b-457c-8ccc-8c22e51ab743
+		summarizeBy: none
+		sourceColumn: Product_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: int64
+		formatString: 0
+		lineageTag: b966f4e5-8c7c-4aed-ba35-cfaf6fc5a705
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: bbdd90ea-bde9-46ef-b781-43f7075ef37f
+		summarizeBy: sum
+		sourceColumn: Purchase_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase_Return_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: aa41695e-e23c-412b-a563-8232a6454738
+		summarizeBy: sum
+		sourceColumn: Purchase_Return_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: dd35d5ad-1acd-424e-b6d1-fac1385a5e2d
+		summarizeBy: sum
+		sourceColumn: Sales_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales_Return_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: b49ce8f5-f596-44dd-b276-7c04f95fadf7
+		summarizeBy: sum
+		sourceColumn: Sales_Return_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Net_Sales_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 98a72740-d59b-423a-a036-3974ecbdfc7a
+		summarizeBy: sum
+		sourceColumn: Net_Sales_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Net_Sales_Value
+		dataType: int64
+		formatString: 0
+		lineageTag: 49187004-67a6-4b1b-9932-fe6e248416f9
+		summarizeBy: sum
+		sourceColumn: Net_Sales_Value
+
+		annotation SummarizationSetBy = Automatic
+
+	column Stock_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 3724ba7d-8196-488e-9f63-2a472eea903f
+		summarizeBy: sum
+		sourceColumn: Stock_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Stock_Value
+		dataType: int64
+		formatString: 0
+		lineageTag: b2e06aca-3266-46f7-8fd1-3bb28b5a3f65
+		summarizeBy: sum
+		sourceColumn: Stock_Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_SupplierProducts = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ahmed\OneDrive\Documents\my-data-analysis-project\cottonil_supplier_cleaning\Cottonil_Suppliers_PowerBI_Ready.xlsx"), null, true),
+				    Suppliers_Sheet = Source{[Item="Suppliers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Suppliers_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store", type text}, {"Supplier", type text}, {"Product_Name", type text}, {"Product_Code", type text}, {"Price", Int64.Type}, {"Purchase_Quantity", Int64.Type}, {"Purchase_Return_Quantity", Int64.Type}, {"Sales_Quantity", Int64.Type}, {"Sales_Return_Quantity", Int64.Type}, {"Net_Sales_Quantity", Int64.Type}, {"Net_Sales_Value", Int64.Type}, {"Stock_Quantity", Int64.Type}, {"Stock_Value", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

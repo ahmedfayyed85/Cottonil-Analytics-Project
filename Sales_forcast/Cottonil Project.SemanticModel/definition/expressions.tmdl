@@ -1,0 +1,58 @@
+expression Purchases_Products =
+		let
+		    Source = Fact_Purchases,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Barcode", "Product_Name", "Department", "Size"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Barcode", "Product_Code"}}),
+		    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Color", each null),
+		    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Product_Group", each null),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"Product_Group", type text}, {"Color", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 0bc5a534-512a-457b-9f60-e3bb058ba788
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Dim_Product =
+		let
+		    Source = Fact_Inventory,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Department", "Product_Name", "Size", "Color", "Product_Group", "Product_Code"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"Product_Code"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each true),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"Product_Code", type text}}),
+		    #"Appended Query" = Table.Combine({#"Changed Type", Purchases_Products}),
+		    #"Removed Duplicates1" = Table.Distinct(#"Appended Query", {"Product_Code"}),
+		    #"Filtered Rows1" = Table.SelectRows(#"Removed Duplicates1", each true)
+		in
+		    #"Filtered Rows1"
+	lineageTag: 41ae0fae-8bcb-4d75-8ff6-f56fa8d5becf
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Missing_Sales_Products =
+		let
+		    Source = Table.NestedJoin(Fact_NetSales, {"Product_Code"}, Dim_Product, {"Product_Code"}, "Dim_Product", JoinKind.LeftAnti)
+		in
+		    Source
+	lineageTag: 00ebee6e-fbc3-4e37-bedb-6c98e681c058
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Missing_Product_Codes =
+		let
+		    Source = Missing_Sales_Products,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Product_Code", "Product_Name", "Size", "Color"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"Product_Code"})
+		in
+		    #"Removed Duplicates"
+	lineageTag: ffd1717c-52ac-43e2-aa39-9e8bba88e7fe
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Cottonil Project"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1d3c137f-9d21-4c9d-987a-54251a702bf2"
+  }
+}

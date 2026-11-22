@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "d57e7b70ce9a5428aadd",
+  "position": {
+    "x": 1048,
+    "y": 0,
+    "z": 4000,
+    "height": 252,
+    "width": 310,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Cottonil_Actual_vs_Forecast"
+                    }
+                  },
+                  "Property": "Forecast Model"
+                }
+              },
+              "queryRef": "Cottonil_Actual_vs_Forecast.Forecast Model",
+              "nativeQueryRef": "Forecast Model"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

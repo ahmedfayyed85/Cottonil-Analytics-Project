@@ -1,0 +1,52 @@
+relationship 96ac7748-9122-8d54-658f-a9b749b68cef
+	fromColumn: Fact_Inventory.Product_Code
+	toColumn: Dim_Product_Final.Product_Code
+
+relationship 4fe6ca07-a123-1937-f300-a6b476d74381
+	fromColumn: Fact_Purchases.Barcode
+	toColumn: Dim_Product_Final.Product_Code
+
+relationship bdfd0685-4cde-17f8-4446-47d5569a8e3d
+	fromColumn: Fact_NetSales.Product_Code
+	toColumn: Dim_Product_Final.Product_Code
+
+relationship dc428e09-4d3b-8f8f-e2b4-771c61150947
+	fromColumn: Fact_Sales.Barcode
+	toColumn: Dim_Product_Final.Product_Code
+
+relationship 499dde94-04bc-0d6a-b52b-9646465c5983
+	fromColumn: Fact_Inventory.Inventory_Date
+	toColumn: Dim_Date.Date
+
+relationship 84e3c5d7-ca84-3538-72d9-8e8321db6102
+	fromColumn: Fact_Purchases.Purchase_Date
+	toColumn: Dim_Date.Date
+
+relationship 2d020617-c69e-063e-20ba-1fc7c9496783
+	fromColumn: Fact_Sales.Date
+	toColumn: Dim_Date.Date
+
+relationship AutoDetected_4e2afedf-1d9c-4cf8-b7ff-aff57fd90964
+	fromColumn: Fact_Purchases.Supplier
+	toColumn: Dim_Supplier.Supplier
+
+relationship AutoDetected_0bc1008d-ef67-4850-b9ab-4af0c0330194
+	fromColumn: Fact_SupplierAccount.Supplier
+	toColumn: Dim_Supplier.Supplier
+
+relationship e4aa9b91-32fe-5864-1570-c52a518f4fa7
+	fromColumn: Fact_SupplierProducts.Supplier
+	toColumn: Dim_Supplier.Supplier
+
+relationship 3d9cc5f0-1b78-7f63-85f3-c1bf0bb967ae
+	fromColumn: Fact_SupplierProducts.Product_Code
+	toColumn: Dim_Product_Final.Product_Code
+
+relationship 6b204c8d-9624-2d49-4438-734e06aa1cb2
+	fromColumn: Fact_SupplierAccount.Transaction_Date
+	toColumn: Dim_Date.Date
+
+relationship 64d2b946-bfff-c7cf-ee41-0dd1e971e986
+	fromColumn: Cottonil_Actual_vs_Forecast.Month
+	toColumn: Dim_Date.Date
+

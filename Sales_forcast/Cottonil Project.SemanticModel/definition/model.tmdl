@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Fact_Purchases","Fact_Inventory","Dim_Product","Purchases_Products","Fact_NetSales","Missing_Sales_Products","Missing_Product_Codes","Dim_Product_Final","Fact_Sales","Fact_SupplierProducts","Fact_SupplierAccount","Dim_Supplier","Cottonil_Actual_vs_Forecast"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table Fact_Purchases
+ref table Fact_Inventory
+ref table Dim_Date
+ref table Fact_NetSales
+ref table Dim_Product_Final
+ref table Fact_Sales
+ref table Fact_SupplierProducts
+ref table Fact_SupplierAccount
+ref table Dim_Supplier
+ref table Cottonil_Actual_vs_Forecast
+ref table Measure
+
+ref cultureInfo en-US
+

@@ -1,0 +1,90 @@
+table Dim_Product_Final
+	lineageTag: dce892f4-9b42-4270-8009-4b0d474e5312
+
+	measure 'Total Products' =
+			
+			DISTINCTCOUNT(Dim_Product_Final[Product_Code])
+		formatString: 0
+		lineageTag: 78447b4a-6cc9-4c74-ad6b-a59075fd9e64
+
+	measure 'Total Departments' =
+			
+			DISTINCTCOUNT(Dim_Product_Final[Department])
+		formatString: 0
+		lineageTag: 161a3345-5160-4de5-b1ba-4e280401e4c8
+
+	measure 'Total Sizes' =
+			
+			DISTINCTCOUNT(Dim_Product_Final[Size])
+		formatString: 0
+		lineageTag: cb5546bb-31b4-4d6e-a384-11ff85644823
+
+	measure 'Total SKUs' =
+			
+			DISTINCTCOUNT(Dim_Product_Final[Product_Code])
+		formatString: 0
+		lineageTag: 49af41e6-4aa5-4055-a6f0-f52b752d4416
+
+	column Department
+		dataType: string
+		lineageTag: 58384656-7788-4f2b-b0a9-e02944b1100a
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 4c859f2d-451f-4c42-aa1f-2da841683e33
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: f2cbece0-9b4e-4b92-897e-352c9ff2ed4b
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Color
+		dataType: string
+		lineageTag: fdbd4a9e-f3f8-4f8a-b72c-590d65a5f654
+		summarizeBy: none
+		sourceColumn: Color
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Group
+		dataType: string
+		lineageTag: a0418112-2025-46ad-b073-bf64132ea255
+		summarizeBy: none
+		sourceColumn: Product_Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Code
+		dataType: string
+		lineageTag: b47616d7-1584-4ff8-a725-844c991274b4
+		summarizeBy: none
+		sourceColumn: Product_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Product_Final = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({Dim_Product, Missing_Product_Codes}),
+				    #"Filtered Rows" = Table.SelectRows(Source, each true),
+				    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows",null,"غير معروف",Replacer.ReplaceValue,{"Product_Group"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Replaced Value", each true)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

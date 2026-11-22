@@ -1,0 +1,290 @@
+table Fact_NetSales
+	lineageTag: 3ab62ce2-437d-41ed-88f3-83dae3988f4b
+
+	measure 'Net Sales Records' =
+			
+			COUNTROWS(Fact_NetSales)
+		formatString: 0
+		lineageTag: ecad6b1f-9229-4deb-adee-a822464743f5
+
+	measure 'Total Discount Value' =
+			
+			SUMX(
+			    Fact_NetSales,
+			    Fact_NetSales[Discount] *
+			    Fact_NetSales[Quantity]
+			)
+		lineageTag: fb7f9dbf-bcfc-4b7f-9ea7-fea0bfc11c25
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Sales Before Discount' =
+			
+			SUMX(
+			    Fact_NetSales,
+			    Fact_NetSales[Price] *
+			    Fact_NetSales[Quantity]
+			)
+		lineageTag: 70e157c1-079b-48ba-af94-a53249124fe3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales After Discount' =
+			
+			SUM(Fact_NetSales[Total_Value])
+		lineageTag: 32843d63-1d5c-471b-a754-2b70857a90f9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Overall Discount Rate %' =
+			
+			DIVIDE(
+			    [Total Discount Value],
+			    [Gross Sales Before Discount],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: db682306-6667-4b6c-93e2-495031816614
+
+	measure 'Discount Reconciliation Difference' =
+			
+			[Gross Sales Before Discount]
+			    - [Total Discount Value]
+			    - [Net Sales After Discount]
+		lineageTag: d3de0051-01d3-44fb-8c37-6d5729f55008
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Product Discount Rate %' =
+			
+			DIVIDE(
+			    [Total Discount Value],
+			    [Gross Sales Before Discount],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 862f9b6d-73cf-448a-82db-fd575185b06a
+
+	measure 'Department Discount Rate %' =
+			
+			DIVIDE(
+			    [Total Discount Value],
+			    [Gross Sales Before Discount],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: db0af355-4dfb-41a6-a593-51082a1df0aa
+
+	measure 'Total Net Sales Quantity' =
+			
+			SUM(Fact_NetSales[Quantity])
+		formatString: 0
+		lineageTag: a4851d8b-596a-487d-9639-1870920d2eec
+
+	measure 'Discounted Sales Quantity' =
+			
+			CALCULATE(
+			    SUM(Fact_NetSales[Quantity]),
+			    Fact_NetSales[Discount] > 0
+			)
+		formatString: 0
+		lineageTag: 4c2dfbba-e19c-4b30-a726-d26f04098861
+
+	measure 'Discount Rate by Product Group %' =
+			
+			DIVIDE(
+			    [Total Discount Value],
+			    [Gross Sales Before Discount],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: bfa7809d-3ec5-4e95-8fa2-a43dc0aac1ef
+
+	column Store
+		dataType: string
+		lineageTag: 8e1c7ade-a232-4765-8619-60f6eb7c53cf
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Permission_Number
+		dataType: string
+		lineageTag: d330bbe4-ed82-48d9-8b8c-2c453fe65676
+		summarizeBy: none
+		sourceColumn: Permission_Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Code
+		dataType: string
+		lineageTag: 8395058d-6fcd-48d0-8ce4-2c5db2512a61
+		summarizeBy: none
+		sourceColumn: Product_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 64b2f2d0-add4-4804-a982-7871dffdd221
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: double
+		lineageTag: 80bf9157-deb1-41b2-92b5-5432f441a674
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: de59e85a-2494-410f-8b95-5d4a53ed6b63
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: b15839c5-cf61-430f-90e3-eba2d5ab66af
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Taxes
+		dataType: double
+		lineageTag: 0a345b0e-2ffb-422f-acdc-424921fdd7e8
+		summarizeBy: sum
+		sourceColumn: Taxes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Net_Price
+		dataType: double
+		lineageTag: 519779d3-db84-444e-94de-1b8a0838c752
+		summarizeBy: sum
+		sourceColumn: Net_Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Total_Value
+		dataType: double
+		lineageTag: ee5c71fb-3f9e-437b-9daf-72ea38e992ac
+		summarizeBy: sum
+		sourceColumn: Total_Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Size
+		dataType: string
+		lineageTag: 8c46e7f8-9adf-465d-9132-c5ad635fe418
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Color
+		dataType: string
+		lineageTag: 66957218-b125-434c-999f-4958c4ef51eb
+		summarizeBy: none
+		sourceColumn: Color
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Discount Level' =
+			
+			VAR Rate =
+			    DIVIDE(
+			        Fact_NetSales[Discount],
+			        Fact_NetSales[Price],
+			        0
+			    )
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        Rate = 0, "No Discount",
+			        Rate <= 0.05, "0–5%",
+			        Rate <= 0.10, "5–10%",
+			        Rate <= 0.20, "10–20%",
+			        "Above 20%"
+			    )
+		lineageTag: fd6ef9bf-29f3-4a21-9701-c3b3cfd11c3e
+		summarizeBy: none
+		sortByColumn: 'Discount Level Sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Discount Level Sort' =
+			
+			VAR Rate =
+			    DIVIDE(
+			        Fact_NetSales[Discount],
+			        Fact_NetSales[Price],
+			        0
+			    )
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        Rate = 0, 1,
+			        Rate <= 0.05, 2,
+			        Rate <= 0.10, 3,
+			        Rate <= 0.20, 4,
+			        5
+			    )
+		formatString: 0
+		lineageTag: a67c4944-2de2-4aaf-bc26-e7884c07be0d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Discount Status' =
+			
+			IF(
+			    Fact_NetSales[Discount] > 0,
+			    "Discounted",
+			    "No Discount"
+			)
+		lineageTag: 3c4f8b00-917c-4127-8a52-b5da2d2b4fd1
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_NetSales = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ahmed\OneDrive\Documents\my-data-analysis-project\Net_sales_before_and_after_discount\Cottonil_Net_Sales_PowerBI_Ready.xlsx"), null, true),
+				    Net_Sales_Sheet = Source{[Item="Net_Sales",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Net_Sales_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store", type text}, {"Permission_Number", type text}, {"Product_Code", type text}, {"Product_Name", type text}, {"Price", Int64.Type}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Taxes", Int64.Type}, {"Net_Price", type number}, {"Total_Value", type number}, {"Size", type text}, {"Color", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Filtered Rows",{{"Price", type number}, {"Taxes", type number}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type1",{{"Product_Code", Text.Trim, type text}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"Product_Code", Text.Clean, type text}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Cleaned Text",{{"Permission_Number", Text.Trim, type text}}),
+				    #"Cleaned Text1" = Table.TransformColumns(#"Trimmed Text1",{{"Permission_Number", Text.Clean, type text}})
+				in
+				    #"Cleaned Text1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

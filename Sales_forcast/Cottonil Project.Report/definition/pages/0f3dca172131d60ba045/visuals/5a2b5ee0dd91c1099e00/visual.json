@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "5a2b5ee0dd91c1099e00",
+  "position": {
+    "x": 352,
+    "y": 0,
+    "z": 2000,
+    "height": 252,
+    "width": 290,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Cottonil_Actual_vs_Forecast"
+                    }
+                  },
+                  "Property": "Q1 Forecast Total"
+                }
+              },
+              "queryRef": "Cottonil_Actual_vs_Forecast.Q1 Forecast Total",
+              "nativeQueryRef": "Q1 Forecast Total"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Cottonil_Actual_vs_Forecast"
+                  }
+                },
+                "Property": "Q1 Forecast Total"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

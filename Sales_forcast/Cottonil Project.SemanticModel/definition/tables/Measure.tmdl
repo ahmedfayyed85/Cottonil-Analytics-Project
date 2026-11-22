@@ -1,0 +1,647 @@
+table Measure
+	lineageTag: 1da4822d-61d5-43e8-8c14-cefa99e5240e
+
+	measure 'HTML - Total Sales Card' =
+			
+			VAR SalesValue =
+			    [Total Sales Value]
+			
+			VAR MoMValue =
+			    [Sales MoM Growth %]
+			
+			VAR DisplayValue =
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( SalesValue ), "—",
+			        ABS ( SalesValue ) >= 1000000,
+			            FORMAT ( SalesValue / 1000000, "0.0" ) & "M",
+			        ABS ( SalesValue ) >= 1000,
+			            FORMAT ( SalesValue / 1000, "0.0" ) & "K",
+			        FORMAT ( SalesValue, "#,##0" )
+			    )
+			
+			VAR MoMText =
+			    IF (
+			        ISBLANK ( MoMValue ),
+			        "Select one month for MoM",
+			        "MoM " & FORMAT ( MoMValue, "+0.0%;-0.0%;0.0%" )
+			    )
+			
+			VAR MoMColor =
+			    IF ( MoMValue < 0, "#B42318", "#85831A" )
+			
+			RETURN
+			    "
+			    <div class='sales-card'>
+			        <div class='card-title'>Total Sales</div>
+			        <div class='card-value'>" & DisplayValue & "</div>
+			        <div class='card-mom' style='color:" & MoMColor & ";'>" & MoMText & "</div>
+			    </div>
+			
+			    <style>
+			    .sales-card {
+			        width: 270px;
+			        height: 196px;
+			        box-sizing: border-box;
+			        background: #FFFFFF;
+			        border-radius: 18px;
+			        padding: 14px;
+			        display: flex;
+			        flex-direction: column;
+			        align-items: center;
+			        font-family: Segoe UI, sans-serif;
+			        transition: background 0.3s ease;
+			        cursor: pointer;
+			        position: relative;
+			    }
+			
+			    .sales-card .card-title {
+			        color: #000000;
+			        font-size: 25px;
+			        font-weight: 500;
+			        margin: 0;
+			        text-align: center;
+			    }
+			
+			    .sales-card .card-value {
+			        color: #000000;
+			        font-size: 23px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 50%;
+			        left: 50%;
+			        transform: translate(-50%, -50%);
+			    }
+			
+			    .sales-card .card-mom {
+			        font-size: 13px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 72%;
+			        left: 50%;
+			        transform: translateX(-50%);
+			        white-space: nowrap;
+			    }
+			
+			    .sales-card:hover {
+			        background: #F4F35B;
+			    }
+			    </style>
+			    "
+		lineageTag: 245af9ee-b98e-4173-a4db-876095745275
+
+	measure 'HTML - Total Net Sales Card' =
+			
+			VAR SalesValue =
+			    [Total Net Sales (Date Aware)]
+			
+			VAR MoMValue =
+			    [Net Sales MoM %]
+			
+			VAR DisplayValue =
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( SalesValue ), "—",
+			        ABS ( SalesValue ) >= 1000000,
+			            FORMAT ( SalesValue / 1000000, "0.0" ) & "M",
+			        ABS ( SalesValue ) >= 1000,
+			            FORMAT ( SalesValue / 1000, "0.0" ) & "K",
+			        FORMAT ( SalesValue, "#,##0" )
+			    )
+			
+			VAR MoMText =
+			    IF (
+			        ISBLANK ( MoMValue ),
+			        "Select one month for MoM",
+			        "MoM " & FORMAT ( MoMValue, "+0.0%;-0.0%;0.0%" )
+			    )
+			
+			VAR MoMColor =
+			    IF ( MoMValue < 0, "#B42318", "#85831A" )
+			
+			RETURN
+			    "
+			    <div class='sales-card'>
+			        <div class='card-title'>Total Net Sales</div>
+			        <div class='card-value'>" & DisplayValue & "</div>
+			        <div class='card-mom' style='color:" & MoMColor & ";'>" & MoMText & "</div>
+			    </div>
+			
+			    <style>
+			    .sales-card {
+			        width: 270px;
+			        height: 196px;
+			        box-sizing: border-box;
+			        background: #FFFFFF;
+			        border-radius: 18px;
+			        padding: 14px;
+			        display: flex;
+			        flex-direction: column;
+			        align-items: center;
+			        font-family: Segoe UI, sans-serif;
+			        transition: background 0.3s ease;
+			        cursor: pointer;
+			        position: relative;
+			    }
+			
+			    .sales-card .card-title {
+			        color: #000000;
+			        font-size: 25px;
+			        font-weight: 500;
+			        margin: 0;
+			    }
+			
+			    .sales-card .card-value {
+			        color: #000000;
+			        font-size: 23px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 50%;
+			        left: 50%;
+			        transform: translate(-50%, -50%);
+			    }
+			
+			    .sales-card .card-mom {
+			        font-size: 13px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 72%;
+			        left: 50%;
+			        transform: translateX(-50%);
+			        white-space: nowrap;
+			    }
+			
+			    .sales-card:hover {
+			        background: #F4F35B;
+			    }
+			    </style>
+			    "
+		lineageTag: 7593ab1d-5b2f-49ba-94f0-bcc1a427371d
+
+	measure 'Total Net Sales (Date Aware)' =
+			
+			VAR VisibleInvoices =
+			    VALUES ( Fact_Sales[Permission_Number] )
+			RETURN
+			    CALCULATE (
+			        SUM ( Fact_NetSales[Net_Price] ),
+			        TREATAS (
+			            VisibleInvoices,
+			            Fact_NetSales[Permission_Number]
+			        )
+			    )
+		lineageTag: 02fdc03f-7910-417c-a41e-6d45b49f300d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Previous Month Net Sales' =
+			
+			CALCULATE (
+			    [Total Net Sales (Date Aware)],
+			    DATEADD ( Dim_Date[Date], -1, MONTH )
+			)
+		lineageTag: 84a75594-2a98-4a06-90b2-022d32f6c87d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales MoM %' =
+			
+			VAR CurrentSales = [Total Net Sales (Date Aware)]
+			VAR PreviousSales = [Previous Month Net Sales]
+			RETURN
+			    IF (
+			        NOT HASONEVALUE ( Dim_Date[Year Month] )
+			            || ISBLANK ( CurrentSales )
+			            || ISBLANK ( PreviousSales )
+			            || PreviousSales = 0,
+			        BLANK (),
+			        DIVIDE ( CurrentSales - PreviousSales, PreviousSales )
+			    )
+		lineageTag: 659f6d89-e517-44d5-bd7d-5e69418c5b0d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Previous Month Purchase Value' =
+			
+			CALCULATE (
+			    [Total Purchase Value],
+			    DATEADD ( Dim_Date[Date], -1, MONTH )
+			)
+		lineageTag: 28cbae38-e062-499f-8c72-012285960e29
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Purchase Value MoM %' =
+			
+			VAR CurrentValue = [Total Purchase Value]
+			VAR PreviousValue = [Previous Month Purchase Value]
+			RETURN
+			    IF (
+			        NOT HASONEVALUE ( Dim_Date[Year Month] )
+			            || ISBLANK ( CurrentValue )
+			            || ISBLANK ( PreviousValue )
+			            || PreviousValue = 0,
+			        BLANK (),
+			        DIVIDE ( CurrentValue - PreviousValue, PreviousValue )
+			    )
+		lineageTag: db7008e5-c329-47f9-a6e7-abe965195882
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Previous Month Sales Quantity' =
+			
+			CALCULATE (
+			    [Total Sales Quantity],
+			    DATEADD ( Dim_Date[Date], -1, MONTH )
+			)
+		formatString: 0
+		lineageTag: d8a73d04-dbc3-41ac-8e8c-3ecae0dc5cb4
+
+	measure 'Sales Quantity MoM %' =
+			
+			VAR CurrentValue = [Total Sales Quantity]
+			VAR PreviousValue = [Previous Month Sales Quantity]
+			RETURN
+			    IF (
+			        NOT HASONEVALUE ( Dim_Date[Year Month] )
+			            || ISBLANK ( CurrentValue )
+			            || ISBLANK ( PreviousValue )
+			            || PreviousValue = 0,
+			        BLANK (),
+			        DIVIDE ( CurrentValue - PreviousValue, PreviousValue )
+			    )
+		lineageTag: d8bbaff4-7348-4b7d-99f1-4a599a1afece
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Previous Month Purchase Quantity' =
+			
+			CALCULATE (
+			    [Total Purchase Quantity],
+			    DATEADD ( Dim_Date[Date], -1, MONTH )
+			)
+		formatString: 0
+		lineageTag: f0459097-2111-45c7-800d-91b60ed1c0df
+
+	measure 'Purchase Quantity MoM %' =
+			
+			VAR CurrentValue = [Total Purchase Quantity]
+			VAR PreviousValue = [Previous Month Purchase Quantity]
+			RETURN
+			    IF (
+			        NOT HASONEVALUE ( Dim_Date[Year Month] )
+			            || ISBLANK ( CurrentValue )
+			            || ISBLANK ( PreviousValue )
+			            || PreviousValue = 0,
+			        BLANK (),
+			        DIVIDE ( CurrentValue - PreviousValue, PreviousValue )
+			    )
+		lineageTag: ace0fbd0-df6f-4d0a-98f0-23860e5105fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'HTML - Total Purchase Quantity Card' =
+			
+			VAR QuantityValue =
+			    [Total Purchase Quantity]
+			
+			VAR MoMValue =
+			    [Purchase Quantity MoM %]
+			
+			VAR DisplayValue =
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( QuantityValue ), "—",
+			        ABS ( QuantityValue ) >= 1000000,
+			            FORMAT ( QuantityValue / 1000000, "0.0" ) & "M",
+			        ABS ( QuantityValue ) >= 1000,
+			            FORMAT ( QuantityValue / 1000, "0.0" ) & "K",
+			        FORMAT ( QuantityValue, "#,##0" )
+			    )
+			
+			VAR MoMText =
+			    IF (
+			        ISBLANK ( MoMValue ),
+			        "Select one month for MoM",
+			        "MoM " & FORMAT ( MoMValue, "+0.0%;-0.0%;0.0%" )
+			    )
+			
+			VAR MoMColor =
+			    IF ( MoMValue < 0, "#B42318", "#85831A" )
+			
+			RETURN
+			    "
+			    <div class='sales-card'>
+			        <div class='card-title'>Total Purchase Quantity</div>
+			        <div class='card-value'>" & DisplayValue & "</div>
+			        <div class='card-mom' style='color:" & MoMColor & ";'>" & MoMText & "</div>
+			    </div>
+			
+			    <style>
+			    .sales-card {
+			        width: 270px;
+			        height: 196px;
+			        box-sizing: border-box;
+			        background: #FFFFFF;
+			        border-radius: 18px;
+			        padding: 14px;
+			        display: flex;
+			        flex-direction: column;
+			        align-items: center;
+			        font-family: Segoe UI, sans-serif;
+			        transition: background 0.3s ease;
+			        cursor: pointer;
+			        position: relative;
+			    }
+			
+			    .sales-card .card-title {
+			        color: #000000;
+			        font-size: 25px;
+			        font-weight: 500;
+			        margin: 0;
+			        text-align: center;
+			    }
+			
+			    .sales-card .card-value {
+			        color: #000000;
+			        font-size: 23px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 50%;
+			        left: 50%;
+			        transform: translate(-50%, -50%);
+			    }
+			
+			    .sales-card .card-mom {
+			        font-size: 13px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 72%;
+			        left: 50%;
+			        transform: translateX(-50%);
+			        white-space: nowrap;
+			    }
+			
+			    .sales-card:hover {
+			        background: #F4F35B;
+			    }
+			    </style>
+			    "
+		lineageTag: 451b9db2-ae70-4055-b975-9da133369d5b
+
+	measure 'HTML - Total Purchase Sales Card' =
+			
+			VAR PurchaseValue =
+			    [Total Purchase Value]
+			
+			VAR MoMValue =
+			    [Purchase Value MoM %]
+			
+			VAR DisplayValue =
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( PurchaseValue ), "—",
+			        ABS ( PurchaseValue ) >= 1000000,
+			            FORMAT ( PurchaseValue / 1000000, "0.0" ) & "M",
+			        ABS ( PurchaseValue ) >= 1000,
+			            FORMAT ( PurchaseValue / 1000, "0.0" ) & "K",
+			        FORMAT ( PurchaseValue, "#,##0" )
+			    )
+			
+			VAR MoMText =
+			    IF (
+			        ISBLANK ( MoMValue ),
+			        "Select one month for MoM",
+			        "MoM " & FORMAT ( MoMValue, "+0.0%;-0.0%;0.0%" )
+			    )
+			
+			VAR MoMColor =
+			    IF ( MoMValue < 0, "#B42318", "#85831A" )
+			
+			RETURN
+			    "
+			    <div class='sales-card'>
+			        <div class='card-title'>Total Purchase Sales</div>
+			        <div class='card-value'>" & DisplayValue & "</div>
+			        <div class='card-mom' style='color:" & MoMColor & ";'>" & MoMText & "</div>
+			    </div>
+			
+			    <style>
+			    .sales-card {
+			        width: 270px;
+			        height: 196px;
+			        box-sizing: border-box;
+			        background: #FFFFFF;
+			        border-radius: 18px;
+			        padding: 14px;
+			        display: flex;
+			        flex-direction: column;
+			        align-items: center;
+			        font-family: Segoe UI, sans-serif;
+			        transition: background 0.3s ease;
+			        cursor: pointer;
+			        position: relative;
+			    }
+			
+			    .sales-card .card-title {
+			        color: #000000;
+			        font-size: 25px;
+			        font-weight: 500;
+			        margin: 0;
+			        text-align: center;
+			    }
+			
+			    .sales-card .card-value {
+			        color: #000000;
+			        font-size: 23px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 50%;
+			        left: 50%;
+			        transform: translate(-50%, -50%);
+			    }
+			
+			    .sales-card .card-mom {
+			        font-size: 13px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 72%;
+			        left: 50%;
+			        transform: translateX(-50%);
+			        white-space: nowrap;
+			    }
+			
+			    .sales-card:hover {
+			        background: #F4F35B;
+			    }
+			    </style>
+			    "
+		lineageTag: 7550ee8f-30c4-42f0-97de-b4f9a99d791a
+
+	measure 'HTML - Total Sales Quantity Card' =
+			
+			VAR QuantityValue =
+			    [Total Sales Quantity]
+			
+			VAR MoMValue =
+			    [Sales Quantity MoM %]
+			
+			VAR DisplayValue =
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( QuantityValue ), "—",
+			        ABS ( QuantityValue ) >= 1000000,
+			            FORMAT ( QuantityValue / 1000000, "0.0" ) & "M",
+			        ABS ( QuantityValue ) >= 1000,
+			            FORMAT ( QuantityValue / 1000, "0.0" ) & "K",
+			        FORMAT ( QuantityValue, "#,##0" )
+			    )
+			
+			VAR MoMText =
+			    IF (
+			        ISBLANK ( MoMValue ),
+			        "Select one month for MoM",
+			        "MoM " & FORMAT ( MoMValue, "+0.0%;-0.0%;0.0%" )
+			    )
+			
+			VAR MoMColor =
+			    IF ( MoMValue < 0, "#B42318", "#85831A" )
+			
+			RETURN
+			    "
+			    <div class='sales-card'>
+			        <div class='card-title'>Total Sales Quantity</div>
+			        <div class='card-value'>" & DisplayValue & "</div>
+			        <div class='card-mom' style='color:" & MoMColor & ";'>" & MoMText & "</div>
+			    </div>
+			
+			    <style>
+			    .sales-card {
+			        width: 270px;
+			        height: 196px;
+			        box-sizing: border-box;
+			        background: #FFFFFF;
+			        border-radius: 18px;
+			        padding: 14px;
+			        display: flex;
+			        flex-direction: column;
+			        align-items: center;
+			        font-family: Segoe UI, sans-serif;
+			        transition: background 0.3s ease;
+			        cursor: pointer;
+			        position: relative;
+			    }
+			
+			    .sales-card .card-title {
+			        color: #000000;
+			        font-size: 25px;
+			        font-weight: 500;
+			        margin: 0;
+			        text-align: center;
+			    }
+			
+			    .sales-card .card-value {
+			        color: #000000;
+			        font-size: 23px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 50%;
+			        left: 50%;
+			        transform: translate(-50%, -50%);
+			    }
+			
+			    .sales-card .card-mom {
+			        font-size: 13px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 72%;
+			        left: 50%;
+			        transform: translateX(-50%);
+			        white-space: nowrap;
+			    }
+			
+			    .sales-card:hover {
+			        background: #F4F35B;
+			    }
+			    </style>
+			    "
+		lineageTag: 241f2e27-7d9c-4922-bc90-e21771de04ee
+
+	measure 'HTML - Current Stock Card' =
+			
+			VAR StockValue =
+			    [Current Stock]
+			
+			VAR DisplayValue =
+			    IF (
+			        ISBLANK ( StockValue ),
+			        "—",
+			        FORMAT ( StockValue, "#,##0" )
+			    )
+			
+			RETURN
+			    "
+			    <div class='stock-card'>
+			        <div class='card-title'>Current Stock</div>
+			        <div class='card-value'>" & DisplayValue & "</div>
+			    </div>
+			
+			    <style>
+			    .stock-card {
+			        width: 270px;
+			        height: 196px;
+			        box-sizing: border-box;
+			        background: #FFFFFF;
+			        border-radius: 18px;
+			        padding: 14px;
+			        display: flex;
+			        flex-direction: column;
+			        align-items: center;
+			        font-family: Segoe UI, sans-serif;
+			        transition: background 0.3s ease;
+			        cursor: pointer;
+			        position: relative;
+			    }
+			
+			    .stock-card .card-title {
+			        color: #000000;
+			        font-size: 25px;
+			        font-weight: 500;
+			        margin: 0;
+			        text-align: center;
+			    }
+			
+			    .stock-card .card-value {
+			        color: #000000;
+			        font-size: 23px;
+			        font-weight: 600;
+			        position: absolute;
+			        top: 50%;
+			        left: 50%;
+			        transform: translate(-50%, -50%);
+			    }
+			
+			    .stock-card:hover {
+			        background: #F4F35B;
+			    }
+			    </style>
+			    "
+		lineageTag: e441e30a-39b7-4536-89ad-487f480ed8b8
+
+	column Column
+		formatString: 0
+		lineageTag: b5a8fc3c-72d7-4e55-854c-6039ca7ded91
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Measure = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 03bcbdeaa5cd466db8dc0c294a70b85b
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

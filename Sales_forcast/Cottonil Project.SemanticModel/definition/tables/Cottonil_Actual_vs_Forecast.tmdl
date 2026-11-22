@@ -1,0 +1,162 @@
+table Cottonil_Actual_vs_Forecast
+	lineageTag: 58e1b0bb-ac60-456f-8215-91051188cb0e
+
+	measure 'Actual Sales' =
+			
+			CALCULATE(
+			    SUM('Cottonil_Actual_vs_Forecast'[Sales]),
+			    'Cottonil_Actual_vs_Forecast'[Record_Type] = "Actual"
+			)
+		lineageTag: 7d73aa8e-f0e5-425e-b8aa-d7d71cb58e41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Forecast Sales' =
+			
+			CALCULATE(
+			    SUM('Cottonil_Actual_vs_Forecast'[Sales]),
+			    'Cottonil_Actual_vs_Forecast'[Record_Type] = "Forecast"
+			)
+		lineageTag: d8f40e0c-d721-4694-bac0-3825acf9bfe1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Forecast' =
+			
+			[Forecast Sales]
+		lineageTag: 2c145660-933c-4372-8ebe-d280fc5cf67c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Actual Monthly Sales' =
+			
+			AVERAGEX(
+			    FILTER(
+			        VALUES(Dim_Date[Year Month]),
+			        NOT ISBLANK([Actual Sales])
+			    ),
+			    [Actual Sales]
+			)
+		formatString: 0.0
+		lineageTag: c6644300-b061-4ca3-bb42-1a694ed51bf0
+
+	measure 'Q1 Forecast Total' =
+			
+			CALCULATE(
+			    [Forecast Sales],
+			    DATESBETWEEN(
+			        Dim_Date[Date],
+			        DATE(2021,1,1),
+			        DATE(2021,3,31)
+			    )
+			)
+		formatString: 0.00
+		lineageTag: 6293de8a-3ca9-433e-a6df-c353ac9d7be7
+
+	measure 'Forecast vs Last Quarter %' =
+			
+			VAR ForecastValue = [Q1 Forecast Total]
+			VAR LastQuarter =
+			    CALCULATE(
+			        [Actual Sales],
+			        DATESBETWEEN(
+			            Dim_Date[Date],
+			            DATE(2020,10,1),
+			            DATE(2020,12,31)
+			        )
+			    )
+			RETURN
+			DIVIDE(
+			    ForecastValue - LastQuarter,
+			    LastQuarter
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 65e27ffa-829d-4e7d-832c-6eee8f19f857
+
+	measure 'Forecast Model' =
+			
+			"Simple Exponential Smoothing"
+		lineageTag: f33f3965-eff2-4c75-817a-2c5c42ba42bb
+
+	measure 'Forecast Period' =
+			
+			"Jan 2021 - Mar 2021"
+		lineageTag: 73924ced-361d-4a80-953e-6f10b40a1ee9
+
+	measure 'Forecast WAPE' =
+			
+			0.3622349196
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 08b7d1d3-6223-4dc5-acd1-359c1b2e7f1c
+
+	column Month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0e67fc7c-bd3f-47a0-b761-60b64f42e947
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Sales
+		dataType: double
+		lineageTag: d11b953b-5130-49c6-a4ba-5058a6539232
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Net_Quantity
+		dataType: double
+		lineageTag: 3d04d805-984f-4b5c-bb98-20e148720e4f
+		summarizeBy: sum
+		sourceColumn: Net_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Invoice_Count
+		dataType: int64
+		formatString: 0
+		lineageTag: 9c7795ee-51a9-4e35-a159-89b599274382
+		summarizeBy: sum
+		sourceColumn: Invoice_Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column Negative_Value_Lines
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a6171d4-4ca5-4f38-bb01-310405af0b7c
+		summarizeBy: sum
+		sourceColumn: Negative_Value_Lines
+
+		annotation SummarizationSetBy = Automatic
+
+	column Record_Type
+		dataType: string
+		lineageTag: 25b34128-82fd-44ce-a29a-6d9505218162
+		summarizeBy: none
+		sourceColumn: Record_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Cottonil_Actual_vs_Forecast = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ahmed\Downloads\Cottonil_Actual_vs_Forecast.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Month", type date}, {"Sales", type number}, {"Net_Quantity", type number}, {"Invoice_Count", Int64.Type}, {"Negative_Value_Lines", Int64.Type}, {"Record_Type", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
