@@ -1,0 +1,25 @@
+table Dim_Supplier
+	lineageTag: 3a954d83-818d-4169-a5e1-93bb3c67aa42
+
+	column Supplier
+		dataType: string
+		lineageTag: f694f394-903a-421e-accc-0a8442822906
+		summarizeBy: none
+		sourceColumn: Supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Supplier = m
+		mode: import
+		source =
+				let
+				    Source = Fact_SupplierProducts,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Supplier"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

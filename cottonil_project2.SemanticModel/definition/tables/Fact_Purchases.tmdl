@@ -1,0 +1,132 @@
+table Fact_Purchases
+	lineageTag: 54747cce-9e56-4c14-a0dc-9161fdd35e44
+
+	column Purchase_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4fc15483-cc35-48d1-aeed-e213fc9e3a29
+		summarizeBy: none
+		sourceColumn: Purchase_Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Permission_Number
+		dataType: string
+		lineageTag: eb2f8876-65b9-4503-b2c3-da8763aed80b
+		summarizeBy: none
+		sourceColumn: Permission_Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Supplier
+		dataType: string
+		lineageTag: 175aeebb-ab0e-40a6-8dc1-ba06de9781f6
+		summarizeBy: none
+		sourceColumn: Supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column Supplier_Code
+		dataType: string
+		lineageTag: f6523cea-77e6-446c-afd1-c313c668c46f
+		summarizeBy: none
+		sourceColumn: Supplier_Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase_Type
+		dataType: string
+		lineageTag: 379a2ffe-dbcb-4e56-afc2-333295fccf73
+		summarizeBy: none
+		sourceColumn: Purchase_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Barcode
+		dataType: string
+		lineageTag: 6297eb04-f757-4fac-a9d9-8cee47edbf13
+		summarizeBy: none
+		sourceColumn: Barcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 2bb61b2a-21ca-4475-85bb-df644df3ba3d
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Department
+		dataType: string
+		lineageTag: 1e3752cf-3b25-4004-a91a-73a756d17310
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: 5af16e14-4412-4f01-bdca-68f9bf91d468
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase_Price
+		dataType: double
+		lineageTag: 532d45d6-bb23-49d9-8367-5fe58f38afd0
+		summarizeBy: sum
+		sourceColumn: Purchase_Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Retail_Price
+		dataType: double
+		formatString: 0
+		lineageTag: 04f50fbf-0cc3-4bd6-8ea3-d8d34da31f9b
+		summarizeBy: sum
+		sourceColumn: Retail_Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c2cb239-d16a-47ec-a9b5-f27468a70cb3
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gross_Purchase_Value
+		dataType: double
+		lineageTag: 078c61b7-c1c0-4856-90ee-1eefcb509ec8
+		summarizeBy: sum
+		sourceColumn: Gross_Purchase_Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_Purchases = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ahmed\OneDrive\Documents\my-data-analysis-project\cottonil_Purchases_cleaning\Cottonil_Purchases_PowerBI_Ready.xlsx"), null, true),
+				    Purchases_Sheet = Source{[Item="Purchases",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Purchases_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Purchase_Date", type date}, {"Permission_Number", type text}, {"Supplier", type text}, {"Supplier_Code", type text}, {"Purchase_Type", type text}, {"Barcode", type text}, {"Product_Name", type text}, {"Department", type text}, {"Size", type text}, {"Purchase_Price", type number}, {"Retail_Price", type number}, {"Quantity", Int64.Type}, {"Gross_Purchase_Value", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

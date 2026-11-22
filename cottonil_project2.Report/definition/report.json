@@ -1,0 +1,182 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "Fluent2-CY26SU10",
+      "reportVersionAtImport": {
+        "visual": "2.14.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "SharedResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "htmlContent443BE3AD55E043BF878BED274D3A6855"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "Fluent2-CY26SU10",
+          "path": "BaseThemes/Fluent2-CY26SU10.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Avatar_Small5735493763560987.png",
+          "path": "Avatar_Small5735493763560987.png",
+          "type": "Image"
+        },
+        {
+          "name": "Cart_NavTest_Black.png",
+          "path": "Cart_NavTest_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Cart_NavTest_White.png",
+          "path": "Cart_NavTest_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "home7267444536304246.png",
+          "path": "home7267444536304246.png",
+          "type": "Image"
+        },
+        {
+          "name": "home8338471041388775.png",
+          "path": "home8338471041388775.png",
+          "type": "Image"
+        },
+        {
+          "name": "Icon_Menu29900902277239887.png",
+          "path": "Icon_Menu29900902277239887.png",
+          "type": "Image"
+        },
+        {
+          "name": "Icon_Menu309118210775775437.png",
+          "path": "Icon_Menu309118210775775437.png",
+          "type": "Image"
+        },
+        {
+          "name": "Menu31890356219759985.png",
+          "path": "Menu31890356219759985.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Discounts_Black.png",
+          "path": "Nav_Discounts_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Discounts_White.png",
+          "path": "Nav_Discounts_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Executive_Black.png",
+          "path": "Nav_Executive_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Executive_White.png",
+          "path": "Nav_Executive_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Forecast_Black.png",
+          "path": "Nav_Forecast_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Forecast_White.png",
+          "path": "Nav_Forecast_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Returns_Black.png",
+          "path": "Nav_Returns_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Returns_White.png",
+          "path": "Nav_Returns_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_SalesPerformance_Black.png",
+          "path": "Nav_SalesPerformance_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_SalesPerformance_White.png",
+          "path": "Nav_SalesPerformance_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Supplier_Black.png",
+          "path": "Nav_Supplier_Black.png",
+          "type": "Image"
+        },
+        {
+          "name": "Nav_Supplier_White.png",
+          "path": "Nav_Supplier_White.png",
+          "type": "Image"
+        },
+        {
+          "name": "Search42442930074011087.png",
+          "path": "Search42442930074011087.png",
+          "type": "Image"
+        },
+        {
+          "name": "Typing_Area5619592439084078.png",
+          "path": "Typing_Area5619592439084078.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

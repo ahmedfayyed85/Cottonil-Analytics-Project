@@ -1,0 +1,177 @@
+table Dim_Date
+	lineageTag: 4bad513b-1673-4db7-8d76-c23d7415b479
+	dataCategory: Time
+
+	measure 'Total Sales Quantity' =
+			
+			SUM(Fact_Sales[Quantity])
+		formatString: 0
+		lineageTag: 24517f71-e431-43d7-91ec-077e06a0b1be
+
+	measure 'Total Sales Value' =
+			
+			SUM(Fact_Sales[Calculated_Value])
+		formatString: 0
+		lineageTag: 02b1187a-4779-47f3-81c3-f5ce98f0c3f1
+
+	measure 'Total Purchase Quantity' =
+			
+			SUM(Fact_Purchases[Quantity])
+		formatString: 0
+		lineageTag: bd6d1fa1-46d7-4171-b419-fc6bd39b4068
+
+	measure 'Total Purchase Value' =
+			
+			SUM(Fact_Purchases[Gross_Purchase_Value])
+		lineageTag: 442f9253-520f-437f-8afc-5d4e41dd4286
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Stock' =
+			
+			SUM(Fact_Inventory[Stock_Quantity])
+		formatString: 0
+		lineageTag: f25dbc82-7077-48c5-adbd-a860e5ccb250
+
+	measure 'Total Net Sales' =
+			
+			SUM(Fact_NetSales[Net_Price])
+		lineageTag: f9816353-603d-4aba-b693-f420ee06ee03
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Discounts' =
+			
+			SUM(Fact_NetSales[Discount])
+		lineageTag: 5fe84e1f-9198-4d3c-b693-860b37849c5a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales Transactions' =
+			
+			DISTINCTCOUNT(Fact_Sales[Permission_Number])
+		formatString: 0
+		lineageTag: 0a84f682-db9d-4546-b0cc-cc77d902dcb6
+
+	measure 'Monthly Sales' =
+			
+			[Total Sales Value]
+		formatString: 0
+		lineageTag: 4634dcf4-3b6b-45c0-9ef7-c236d79f4708
+
+	measure 'Sales Value Check' =
+			
+			SUM(Fact_Sales[Calculated_Value])
+		formatString: 0
+		lineageTag: 1c685604-5cef-4486-91c3-ed79aaed6010
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 9f6feb63-d76f-4054-9c21-7d9c306bb04e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 71035bf5-d0cb-437d-94f9-a543b605db52
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: 9f3a39ea-056f-47c7-9180-3075d78868cb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: 0f4b1207-438a-421a-8655-670a29cfba48
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 38e3d11d-22a0-4050-9116-b902530d942c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		lineageTag: 7a6674e5-665a-449e-bed3-2f56b6a2d9b0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year Month]
+		sortByColumn: 'Year Month Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: 3758b911-67f7-4297-bbac-71f3cb374187
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		lineageTag: 6390d818-c465-4e0c-b6a8-b1f958d08b64
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day Name]
+		sortByColumn: 'Day Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Sort'
+		formatString: 0
+		lineageTag: 8491d210-9f05-48ad-a887-c39651f221fe
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year Month Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Sort' =
+			
+			WEEKDAY(Dim_Date[Date], 2)
+		formatString: 0
+		lineageTag: c5bc3f53-de69-44c9-a9c1-122d031a4b27
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    CALENDAR(
+				        DATE(2020, 1, 1),
+				        DATE(2025, 12, 31)
+				    ),
+				    "Year", YEAR([Date]),
+				    "Month Number", MONTH([Date]),
+				    "Month Name", FORMAT([Date], "MMMM"),
+				    "Year Month", FORMAT([Date], "YYYY-MM"),
+				    "Year Month Sort", YEAR([Date]) * 100 + MONTH([Date]),
+				    "Quarter", "Q" & FORMAT([Date], "Q"),
+				    "Day", DAY([Date]),
+				    "Day Name", FORMAT([Date], "DDDD")
+				)
+
+	annotation PBI_Id = de9d1cbec42941ee8cb66a8c45dd2fca
+

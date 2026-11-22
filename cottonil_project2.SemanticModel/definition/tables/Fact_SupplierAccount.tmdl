@@ -1,0 +1,236 @@
+table Fact_SupplierAccount
+	lineageTag: a5f5a9a2-22be-4732-a9d5-0907d9d21407
+
+	measure 'Total Supplier Invoices' =
+			
+			SUM(Fact_SupplierAccount[Invoices])
+		lineageTag: ec19156d-f182-44a3-95ac-c31f62c3257c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Supplier Payments' =
+			
+			SUM(Fact_SupplierAccount[Payments])
+		formatString: 0
+		lineageTag: acdc5fde-fa26-4f10-ace7-c546e23e6d76
+
+	measure 'Total Supplier Returns Value' =
+			
+			SUM(Fact_SupplierAccount[Returns])
+		lineageTag: dd52936f-f605-4e2e-ae65-861a5f8450af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Purchase Quantity2' =
+			
+			SUM(Fact_SupplierProducts[Purchase_Quantity])
+		formatString: 0
+		lineageTag: 98b17453-5a7a-4f6b-9b87-67ed08a67e90
+
+	measure 'Latest Supplier Balance' =
+			
+			VAR CurrentSupplier =
+			    SELECTEDVALUE(Dim_Supplier[Supplier])
+			
+			VAR LastTransaction =
+			    TOPN(
+			        1,
+			        FILTER(
+			            ALL(Fact_SupplierAccount),
+			            Fact_SupplierAccount[Supplier] = CurrentSupplier
+			        ),
+			        Fact_SupplierAccount[Transaction_Date], DESC,
+			        Fact_SupplierAccount[Transaction_Index], DESC
+			    )
+			
+			RETURN
+			    MAXX(
+			        LastTransaction,
+			        Fact_SupplierAccount[Balance]
+			    )
+		lineageTag: 15110029-e66d-42c8-8bd7-5e15aab8b0b7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Latest Balance Type' =
+			
+			VAR CurrentSupplier =
+			    SELECTEDVALUE(Dim_Supplier[Supplier])
+			
+			VAR LastTransaction =
+			    TOPN(
+			        1,
+			        FILTER(
+			            ALL(Fact_SupplierAccount),
+			            Fact_SupplierAccount[Supplier] = CurrentSupplier
+			        ),
+			        Fact_SupplierAccount[Transaction_Date], DESC,
+			        Fact_SupplierAccount[Transaction_Index], DESC
+			    )
+			
+			RETURN
+			    MAXX(
+			        LastTransaction,
+			        Fact_SupplierAccount[Balance_Type]
+			    )
+		lineageTag: c2ccf13d-5b82-41de-a026-3de21932802a
+
+	measure 'Total Latest Supplier Balance' =
+			
+			SUMX(
+			    VALUES(Dim_Supplier[Supplier]),
+			    [Latest Supplier Balance]
+			)
+		lineageTag: 187e2b6f-21e6-4acf-ab16-67f928549909
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Supplier Outstanding Balance' =
+			
+			SUMX(
+			    FILTER(
+			        VALUES(Dim_Supplier[Supplier]),
+			        [Latest Balance Type] = "دائن"
+			    ),
+			    [Latest Supplier Balance]
+			)
+		lineageTag: b47d68ae-c3a0-4c8a-b1e8-e2c7a73c7fa0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Supplier Return Rate' =
+			
+			DIVIDE(
+			    [Total Supplier Returns Value],
+			    [Total Supplier Invoices],
+			    0
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: db3e8a38-cbf7-417c-b302-56c7da3c994c
+
+	column Store
+		dataType: string
+		lineageTag: 1fc9fb72-eae0-4f96-a7f5-ffe9f880f532
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Supplier
+		dataType: string
+		lineageTag: cbc05a7b-361d-447c-9162-fc6e7ceb7b83
+		summarizeBy: none
+		sourceColumn: Supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column Transaction_Type
+		dataType: string
+		lineageTag: 6e5184c5-efd0-4410-8d7c-4f181a944b34
+		summarizeBy: none
+		sourceColumn: Transaction_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: fa9f2ad6-9738-48c3-ab0e-b236f59982d8
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Transaction_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6dabed67-423d-48d4-b75e-6c567d87e02b
+		summarizeBy: none
+		sourceColumn: Transaction_Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Invoices
+		dataType: double
+		lineageTag: 479958e5-0f22-4e06-b118-6d556fb87131
+		summarizeBy: sum
+		sourceColumn: Invoices
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Returns
+		dataType: double
+		lineageTag: 0220fe46-a3ba-4597-ad04-0af51edd6f0a
+		summarizeBy: sum
+		sourceColumn: Returns
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Payments
+		dataType: int64
+		formatString: 0
+		lineageTag: 8aeaae58-eed1-4999-94d5-a0627d60cf66
+		summarizeBy: sum
+		sourceColumn: Payments
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: fc611ecb-6485-44ef-b530-7ae0b710d683
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Balance
+		dataType: double
+		lineageTag: db3a6374-ff91-4584-870b-4df0d13e76b3
+		summarizeBy: none
+		sourceColumn: Balance
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Balance_Type
+		dataType: string
+		lineageTag: d10c1fa0-27f7-4b2e-8bbe-75fb38c2a970
+		summarizeBy: none
+		sourceColumn: Balance_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Transaction_Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 60876cd1-951f-406b-9c6d-7a362a809c83
+		summarizeBy: sum
+		sourceColumn: Transaction_Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_SupplierAccount = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ahmed\OneDrive\Documents\my-data-analysis-project\Supplier Account Statement\Cottonil_Supplier_Account_PowerBI_Ready.xlsx"), null, true),
+				    Supplier_Account_Sheet = Source{[Item="Supplier_Account",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Supplier_Account_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store", type text}, {"Supplier", type text}, {"Transaction_Type", type text}, {"Description", type text}, {"Transaction_Date", type date}, {"Invoices", type number}, {"Returns", type number}, {"Payments", Int64.Type}, {"Discount", type number}, {"Balance", type number}, {"Balance_Type", type text}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Index",{{"Index", "Transaction_Index"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

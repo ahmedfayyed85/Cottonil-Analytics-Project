@@ -1,0 +1,245 @@
+table Fact_Sales
+	lineageTag: 4ccc8273-266d-4f7e-92ed-afd3fc5cc1da
+
+	measure 'Total Sales Revenue' =
+			
+			SUM(Fact_Sales[Total_Value])
+		formatString: #,0.00
+		lineageTag: 61f1aa99-9f25-4b6e-9630-937a0e5a2fc2
+
+		changedProperty = IsHidden
+
+	measure 'Total Invoices' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(Fact_Sales[Permission_Number]),
+			    Fact_Sales[Permission_Number] <> BLANK(),
+			    Fact_Sales[Date] <> BLANK()
+			)
+		formatString: 0
+		lineageTag: 775576e4-410e-401f-8020-59d5df12dcfb
+
+		changedProperty = IsHidden
+
+	measure 'Average Transaction Value' =
+			
+			DIVIDE(
+			    [Total Sales Revenue],
+			    [Total Invoices],
+			    0
+			)
+		formatString: 0.00
+		lineageTag: b192f365-5626-428a-955c-a8dcc0abe94b
+
+		changedProperty = IsHidden
+
+	measure 'Average Items per Invoice' =
+			
+			DIVIDE(
+			    SUM(Fact_Sales[Quantity]),
+			    [Total Invoices],
+			    0
+			)
+		formatString: 0.00
+		lineageTag: 97943364-872e-42ab-b434-f40f64d95e3e
+
+		changedProperty = IsHidden
+
+	measure 'Total Sales Quantity2' =
+			
+			SUM(Fact_Sales[Quantity])
+		formatString: 0
+		lineageTag: 8ef28bad-8c1e-4152-81dc-c428a58438de
+
+		changedProperty = IsHidden
+
+	measure 'Product Sales Contribution %' =
+			
+			VAR ProductSales =
+			    [Total Sales Revenue]
+			
+			VAR TotalSalesAllProducts =
+			    CALCULATE(
+			        [Total Sales Revenue],
+			        REMOVEFILTERS(Dim_Product_Final)
+			    )
+			
+			RETURN
+			    DIVIDE(
+			        ProductSales,
+			        TotalSalesAllProducts,
+			        0
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a654f6dc-5f4f-45e8-8f6d-c695d24937ec
+
+		changedProperty = IsHidden
+
+	measure 'Average Selling Price' =
+			
+			DIVIDE(
+			    SUM(Fact_Sales[Total_Value]),
+			    SUM(Fact_Sales[Quantity]),
+			    0
+			)
+		lineageTag: 85521944-3d76-4f9e-83df-1bce9a6f8bd9
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Previous Month Sales' =
+			
+			CALCULATE(
+			    [Total Sales Revenue],
+			    DATEADD(Dim_Date[Date], -1, MONTH)
+			)
+		lineageTag: 0498aed0-bd53-43ba-b70e-ff9e65780b03
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales MoM Growth %' =
+			
+			VAR CurrentSales =
+			    [Total Sales Revenue]
+			
+			VAR PreviousSales =
+			    [Previous Month Sales]
+			
+			RETURN
+			    IF(
+			        ISBLANK(CurrentSales)
+			            || ISBLANK(PreviousSales)
+			            || PreviousSales = 0,
+			        BLANK(),
+			        DIVIDE(
+			            CurrentSales - PreviousSales,
+			            PreviousSales
+			        )
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 12a671e6-db18-4853-bea0-9dba3f842247
+
+		changedProperty = IsHidden
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e054096a-366e-4396-9297-1f055d7a66fa
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Permission_Number
+		dataType: string
+		lineageTag: 687d1e79-dab2-4c98-a0b8-69ace4f47f3f
+		summarizeBy: none
+		sourceColumn: Permission_Number
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Barcode
+		dataType: string
+		lineageTag: 0da4e2ba-7c0f-44f9-88f8-1db2083584c6
+		summarizeBy: none
+		sourceColumn: Barcode
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: 711aa76f-75de-4468-8c32-4c62dea4fb70
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: double
+		lineageTag: 9a08159a-ef70-4ff2-8a72-84e680e40308
+		summarizeBy: sum
+		sourceColumn: Price
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: c203d136-bc76-4cb2-88db-9c2627c62e28
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Total_Value
+		dataType: double
+		lineageTag: a4f9fa84-78ce-4f7c-b244-0798a59e0ee6
+		summarizeBy: sum
+		sourceColumn: Total_Value
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Calculated_Value
+		dataType: int64
+		formatString: 0
+		lineageTag: c6ad579f-edac-4e89-ae53-e0289419e952
+		summarizeBy: sum
+		sourceColumn: Calculated_Value
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Check
+		dataType: string
+		lineageTag: 7741e5a8-c7cb-4377-b8b0-858b6dea1c07
+		summarizeBy: none
+		sourceColumn: Value_Check
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Sales = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\ahmed\OneDrive\Documents\my-data-analysis-project\cottonil_sales_cleaning\Cottonil_Sales_Cleaned.xlsx"), null, true),
+				    #"Clean_Data (2)_Sheet" = Source{[Item="Clean_Data (2)",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Clean_Data (2)_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Permission_Number", type text}, {"Barcode", type text}, {"Product_Name", type text}, {"Price", type number}, {"Quantity", Int64.Type}, {"Total_Value", type number}, {"Calculated_Value", Int64.Type}, {"Value_Difference", Int64.Type}, {"Value_Check", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows",{"Value_Difference"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Columns", each ([Date] <> null))
+				in
+				    #"Filtered Rows1"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
